@@ -212,7 +212,7 @@ function radar_visualization(config) {
     .attr("width", 1)
     .attr("height", 1)
     .attr("id", "solid");
-  filter.append("feFlood").attr("flood-color", "rgb(0, 0, 0, 0.8)");
+  filter.append("feFlood").attr("flood-color", "#9ea5a6");
   filter.append("feComposite").attr("in", "SourceGraphic");
 
   // draw rings
@@ -262,7 +262,8 @@ function radar_visualization(config) {
       .text(config.title)
       .style("font-family", "Arial, Helvetica")
       .style("font-size", "30")
-      .style("font-weight", "bold");
+      .style("font-weight", "bold")
+      .style("fill", config.colors.title_color);
 
     // date
     radar
@@ -273,14 +274,6 @@ function radar_visualization(config) {
       .style("font-size", "14")
       .style("fill", "#999");
 
-    // footer
-    radar
-      .append("text")
-      .attr("transform", translate(footer_offset.x, footer_offset.y))
-      .text("▲ moved up     ▼ moved down")
-      .attr("xml:space", "preserve")
-      .style("font-family", "Arial, Helvetica")
-      .style("font-size", "10px");
 
     // legend
     var legend = radar.append("g");
@@ -294,15 +287,18 @@ function radar_visualization(config) {
         .text(config.quadrants[quadrant].name)
         .style("font-family", "Arial, Helvetica")
         .style("font-size", "18px")
-        .style("font-weight", "bold");
+        .style("font-weight", "bold")
+        .style("letter-spacing", "0.5px")
+        .style("fill", config.colors.title_color);
       for (var ring = 0; ring < 4; ring++) {
         legend
           .append("text")
           .attr("transform", legend_transform(quadrant, ring))
           .text(config.rings[ring].name)
           .style("font-family", "Arial, Helvetica")
-          .style("font-size", "12px")
+          .style("font-size", "15px")
           .style("font-weight", "bold")
+          .style("letter-spacing", "1px")
           .style("fill", config.rings[ring].color);
         legend
           .selectAll(".legend" + quadrant + ring)
@@ -312,6 +308,7 @@ function radar_visualization(config) {
           .attr("href", function (d, i) {
             return d.link ? d.link : "#"; // stay on same page if no link was provided
           })
+          .style("text-decoration", "none")
           // Add a target if (and only if) there is a link and we want new tabs
           .attr("target", function (d, i) {
             return d.link && config.links_in_new_tabs ? "_blank" : null;
@@ -327,8 +324,11 @@ function radar_visualization(config) {
           .text(function (d, i) {
             return d.id + ". " + d.label;
           })
-          .style("font-family", "Arial, Helvetica")
-          .style("font-size", "11px")
+          .style("font-family", "circular")
+          .style("font-size", "14px")
+          .style("fill", config.colors.title_color)
+          .style("letter-spacing", "0.5px")
+
           .on("mouseover", function (d) {
             showBubble(d);
             highlightLegendItem(d);

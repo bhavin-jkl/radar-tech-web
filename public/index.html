@@ -11,7 +11,7 @@
       href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
       rel="stylesheet"
     />
-    <title>Bootstrap Example</title>
+    <title>Tech Radar</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body id="body">
@@ -111,7 +111,10 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          class="collapse navbar-collapse flex-nowrap"
+          id="navbarSupportedContent"
+        >
           <form class="d-flex">
             <input
               class="form-control me-2"
@@ -126,21 +129,23 @@
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
               type="button"
-              style="margin-right: 2px"
             >
               Add
             </button>
-            <button
-              type="button"
-              onclick="handalColorChange()"
-              class="btn btn-primary"
-            >
-              Dark
-            </button>
           </form>
+          <div class="form-check form-switch" style="margin-left: 10px">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="themeSwitch"
+              onclick="handalColorChange()"
+            />
+          </div>
         </div>
       </div>
     </nav>
+
     <div class="container">
       <div class="row">
         <div class="col"><svg id="radar"></svg></div>
@@ -223,25 +228,28 @@
         grid: "#dddde0",
         inactive: "#ddd",
         color: "#5ba300",
+        title_color: "#000000",
       };
 
       function handalColorChange() {
-        var color = localStorage.getItem("color");
+        var color = localStorage.getItem("theme");
         var body = document.getElementById("body");
-
+        console.log("color", color);
         if (color == "light") {
+          localStorage.setItem("theme", "dark");
           body.style.backgroundColor = "#fff";
-
-          localStorage.setItem("color", "dark");
           radarColors.grid = "#dddde0";
           radarColors.inactive = "#ddd";
           radarColors.color = "#ddd";
+          radarColors.title_color = "#000000";
           renderRadar(entries);
         } else {
-          localStorage.setItem("color", "light");
+          localStorage.setItem("theme", "light");
           body.style.backgroundColor = "#475157";
           radarColors.grid = "#84bfa4";
           radarColors.inactive = "#ddd";
+          radarColors.title_color = "#ffff";
+
           renderRadar(entries);
         }
       }
